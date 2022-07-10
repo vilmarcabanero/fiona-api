@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../Auth';
+import { CommentModule } from '../Comment';
+import { PostModule } from '../Post';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -12,6 +14,8 @@ import { AppService } from './app.service';
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
+    PostModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

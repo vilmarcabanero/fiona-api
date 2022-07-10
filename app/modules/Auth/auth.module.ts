@@ -10,9 +10,9 @@ import { AuthController, AuthService, User, UserSchema, JwtStrategy } from '.';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'DC111321',
-      signOptions: {
-        expiresIn: 3600,
-      },
+      // signOptions: {
+      //   expiresIn: 3600,
+      // },
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],

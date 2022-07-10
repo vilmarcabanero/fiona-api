@@ -25,7 +25,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     if (found) {
-      throw new ConflictException('Email is already registered.');
+      throw new ConflictException('already-registered');
     }
 
     const user = await new this.user({
@@ -48,13 +48,13 @@ export class AuthService {
     const user = await this.user.findOne({ email });
 
     if (!user) {
-      throw new UnauthorizedException('Email is not yet registered.');
+      throw new UnauthorizedException('not-yet-registered');
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      throw new UnauthorizedException('Password is incorrect.');
+      throw new UnauthorizedException('password-incorrect');
     }
 
     const tokenPayload = { _id: user._id };
