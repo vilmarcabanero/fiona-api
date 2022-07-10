@@ -23,4 +23,10 @@ export class AuthController {
   async getUser(@GetUser() user: any): Promise<any> {
     return this.authService.getUser(user._id);
   }
+
+  @Get('/user/all')
+  @UseGuards(AuthGuard())
+  async getAllUsers(): Promise<any> {
+    return this.authService.getAllUsers();
+  }
 }

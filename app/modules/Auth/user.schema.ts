@@ -16,6 +16,9 @@ export class User {
 
   @Prop({ required: false })
   password: string;
+
+  @Prop({ required: false })
+  avatarColor: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

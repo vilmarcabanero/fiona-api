@@ -21,6 +21,8 @@ export class AuthService {
     const { email, password } = payload;
     const found = await this.user.findOne({ email });
 
+    const selectedColor = Math.floor(Math.random() * 16) + 1;
+
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -31,6 +33,7 @@ export class AuthService {
     const user = await new this.user({
       ...payload,
       password: hashedPassword,
+      avatarColor: selectedColor,
     }).save();
 
     const tokenPayload = { _id: user._id };
@@ -68,5 +71,9 @@ export class AuthService {
 
   async getUser(_id: string): Promise<User> {
     return this.user.findById(_id, { password: 0 });
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await this.user.find({}, { password: 0 });
   }
 }
