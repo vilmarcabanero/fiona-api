@@ -21,7 +21,6 @@ export class CommentService {
   }
 
   async createComment(user: any, payload: CommentPayload): Promise<Comment> {
-    // 62c93cc3648f4acadc3d0bc8
     const userName = `${user.firstName} ${user.lastName}`;
     const userId = user._id;
     const comment = new this.comment({ ...payload, userName, userId });

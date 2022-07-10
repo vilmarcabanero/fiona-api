@@ -6,9 +6,9 @@ import {
   Param,
   Patch,
   Post,
-  // UseGuards,
+  UseGuards,
 } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'app/decorators/get.user.decorator';
 import { CommentService, Comment, CommentPayload } from '.';
 
@@ -31,6 +31,7 @@ export class CommentController {
   //   return this.commentService.getComment(_id);
   // }
 
+  @UseGuards(AuthGuard())
   @Post()
   async createComment(
     @Body() payload: CommentPayload,
