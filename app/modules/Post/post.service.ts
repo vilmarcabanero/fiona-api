@@ -47,9 +47,6 @@ export class PostService {
 
     if (!foundLiker) {
       likers.push(user._id);
-      return await this.post.findByIdAndUpdate(_id, {
-        likers,
-      });
     } else {
       const indexOfLiker = found.likers
         .map((liker) => {
@@ -57,10 +54,10 @@ export class PostService {
         })
         .indexOf(user._id.toString());
       likers.splice(indexOfLiker, 1);
-      return await this.post.findByIdAndUpdate(_id, {
-        likers,
-      });
     }
+    return await this.post.findByIdAndUpdate(_id, {
+      likers,
+    });
   }
 
   async deletePost(_id: string): Promise<any> {
@@ -69,5 +66,13 @@ export class PostService {
 
   async deleteAllPosts(): Promise<any> {
     return this.post.deleteMany({});
+  }
+
+  async hidePost(_id: string): Promise<any> {
+    return await this.post.findByIdAndUpdate(_id, { hidden: true });
+  }
+
+  async unhidePost(_id: string): Promise<any> {
+    return await this.post.findByIdAndUpdate(_id, { hidden: false });
   }
 }

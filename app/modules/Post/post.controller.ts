@@ -41,6 +41,16 @@ export class PostController {
     return this.postService.likePost(_id, user);
   }
 
+  @Patch('/hide/:id')
+  async hidePost(@Param('id') _id: string): Promise<Post> {
+    return this.postService.hidePost(_id);
+  }
+
+  @Patch('/unhide/:id')
+  async unhidePost(@Param('id') _id: string): Promise<Post> {
+    return this.postService.hidePost(_id);
+  }
+
   @Patch('/:id')
   async updatePost(
     @Param('id') _id: string,
