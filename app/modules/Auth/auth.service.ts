@@ -19,6 +19,7 @@ export class AuthService {
 
   async register(payload: RegisterPayload): Promise<object> {
     const { email, password } = payload;
+    const [username] = email.split('@');
     const found = await this.user.findOne({ email });
 
     const selectedColor = Math.floor(Math.random() * 16) + 1;
@@ -34,6 +35,7 @@ export class AuthService {
       ...payload,
       password: hashedPassword,
       avatarColor: selectedColor,
+      username,
     }).save();
 
     const tokenPayload = { _id: user._id };
@@ -47,6 +49,7 @@ export class AuthService {
 
   async login(payload: LoginPayload): Promise<object> {
     const { email, password } = payload;
+    const [username] = email.split('@');
 
     const user = await this.user.findOne({ email });
 
@@ -63,6 +66,8 @@ export class AuthService {
     const tokenPayload = { _id: user._id };
     const accessToken: string = this.jwtService.sign(tokenPayload);
 
+    await this.user.findByIdAndUpdate(user._id, { username });
+
     return {
       accessToken,
       message: 'Login successful.',
@@ -70,7 +75,12 @@ export class AuthService {
   }
 
   async getUser(_id: string): Promise<User> {
-    return this.user.findById(_id, { password: 0 });
+    const user = await this.user.findById(_id, { password: 0 });
+
+    const [username] = user.email.split('@');
+
+    await this.user.findByIdAndUpdate(_id, { username });
+    return user;
   }
 
   async getAllUsers(): Promise<User[]> {

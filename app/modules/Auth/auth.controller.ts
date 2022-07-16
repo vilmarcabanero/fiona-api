@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'app/decorators/get.user.decorator';
 import { AuthService } from '.';
@@ -25,7 +25,6 @@ export class AuthController {
   }
 
   @Get('/user/all')
-  @UseGuards(AuthGuard())
   async getAllUsers(): Promise<any> {
     return this.authService.getAllUsers();
   }
