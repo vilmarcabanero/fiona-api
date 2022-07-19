@@ -88,6 +88,23 @@ export class AuthService {
     return await this.user.find({}, { password: 0 });
   }
 
+  async searchUsers(query: any, user: any): Promise<User[]> {
+    const { search } = query;
+    const keyword = search
+      ? {
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { username: { $regex: search, $options: 'i' } },
+          ],
+        }
+      : {};
+    return await this.user
+      .find(keyword, { password: 0 })
+      .find({ _id: { $ne: user._id } });
+  }
+
   async getUserByUsername(username: string): Promise<User> {
     return this.user.findOne({ username }, { password: 0 });
   }

@@ -18,25 +18,38 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Get()
-  async getChats(@GetUser() user: any): Promise<Chat[]> {
-    return this.chatService.getChats(user._id);
-  }
-
-  @Get('/:id')
-  async getChat(@Param('id') _id: string): Promise<Chat> {
-    return this.chatService.getChat(_id);
+  async fetchChats(@GetUser() user: any): Promise<Chat[]> {
+    return this.chatService.fetchChats(user._id);
   }
 
   @Post()
-  async createChat(
+  async accessChat(
     @Body() payload: ChatPayload,
     @GetUser() user: any,
   ): Promise<Chat> {
-    return this.chatService.createChat(user._id, payload);
+    return this.chatService.accessChat(user, payload);
   }
 
-  @Delete('/:id')
-  async deleteChat(@Param('id') _id: string): Promise<Chat> {
-    return this.chatService.deleteChat(_id);
+  @Post('/group/create')
+  async createGroupChat(
+    @Body() payload: ChatPayload,
+    @GetUser() user: any,
+  ): Promise<Chat> {
+    return this.chatService.createGroupChat(user, payload);
+  }
+
+  @Patch('/group/rename')
+  async renameGroup(@Body() payload: ChatPayload): Promise<Chat> {
+    return this.chatService.renameGroup(payload);
+  }
+
+  @Patch('/group/remove')
+  async removeFromGroup(@Body() payload: ChatPayload): Promise<Chat> {
+    return this.chatService.removeFromGroup(payload);
+  }
+
+  @Patch('/group/add')
+  async addToGroup(@Body() payload: ChatPayload): Promise<Chat> {
+    return this.chatService.addToGroup(payload);
   }
 }

@@ -5,10 +5,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from 'app/decorators/get.user.decorator';
 import { AuthService } from '.';
 import { RegisterPayload } from './register.payload';
@@ -36,6 +36,12 @@ export class AuthController {
   @Get('/user/all')
   async getAllUsers(): Promise<any> {
     return this.authService.getAllUsers();
+  }
+
+  @Get('/user/search')
+  @UseGuards(AuthGuard())
+  async searchUsers(@Query() query: any, @GetUser() user: any): Promise<any> {
+    return this.authService.searchUsers(query, user);
   }
 
   @Get('/user/:username')
