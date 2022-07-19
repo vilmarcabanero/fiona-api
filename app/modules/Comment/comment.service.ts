@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CommentPayload } from './comment.payload';
 import { Comment, CommentDocument } from './comment.schema';
-
+import axios from 'axios';
 @Injectable()
 export class CommentService {
   constructor(
@@ -23,7 +23,13 @@ export class CommentService {
   async createComment(user: any, payload: CommentPayload): Promise<Comment> {
     const userName = `${user.firstName} ${user.lastName}`;
     const userId = user._id;
-    const comment = new this.comment({ ...payload, userName, userId });
+    const username = user.username;
+    const comment = new this.comment({
+      ...payload,
+      userName,
+      userId,
+      username,
+    });
     return comment.save();
   }
 

@@ -13,6 +13,8 @@ export class Comment {
   message: string;
   @Prop({ required: true })
   userName: string;
+  @Prop({ required: true })
+  username: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

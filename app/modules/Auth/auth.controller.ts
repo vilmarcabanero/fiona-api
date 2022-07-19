@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from 'app/decorators/get.user.decorator';
 import { AuthService } from '.';
 import { RegisterPayload } from './register.payload';
@@ -27,5 +36,19 @@ export class AuthController {
   @Get('/user/all')
   async getAllUsers(): Promise<any> {
     return this.authService.getAllUsers();
+  }
+
+  @Get('/user/:username')
+  async getUserByUsername(@Param('username') username: string): Promise<any> {
+    return this.authService.getUserByUsername(username);
+  }
+
+  @Patch('/user/profile-picture')
+  @UseGuards(AuthGuard())
+  async updateProfilePicture(
+    @Body() payload: any,
+    @GetUser() user: any,
+  ): Promise<any> {
+    return this.authService.updateProfilePicture(payload, user);
   }
 }

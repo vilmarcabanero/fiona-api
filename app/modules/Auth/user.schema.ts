@@ -22,6 +22,14 @@ export class User {
 
   @Prop({ required: false })
   username?: string;
+
+  @Prop({
+    required: false,
+  })
+  profilePictureUrl?: string;
+
+  @Prop({ required: true, default: false })
+  isAdmin: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

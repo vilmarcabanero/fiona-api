@@ -24,7 +24,8 @@ export class PostService {
   async createPost(user: any, payload: PostPayload): Promise<Post> {
     const userName = `${user.firstName} ${user.lastName}`;
     const userId = user._id;
-    const post = new this.post({ ...payload, userId, userName });
+    const username = user.username;
+    const post = new this.post({ ...payload, userId, userName, username });
     return post.save();
   }
 

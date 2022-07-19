@@ -17,6 +17,8 @@ export class Post {
   likers?: string[];
   @Prop({ required: false, default: false })
   hidden: boolean;
+  @Prop({ required: true })
+  username: string;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

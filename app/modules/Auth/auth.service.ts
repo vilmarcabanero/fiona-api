@@ -8,6 +8,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument, RegisterPayload, LoginPayload } from '.';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -85,5 +86,16 @@ export class AuthService {
 
   async getAllUsers(): Promise<User[]> {
     return await this.user.find({}, { password: 0 });
+  }
+
+  async getUserByUsername(username: string): Promise<User> {
+    return this.user.findOne({ username }, { password: 0 });
+  }
+
+  async updateProfilePicture(payload: any, user: any): Promise<User> {
+    const { profilePictureUrl } = payload;
+    await this.user.findByIdAndUpdate(user._id, { profilePictureUrl });
+
+    return this.user.findById(user._id, { password: 0 });
   }
 }
