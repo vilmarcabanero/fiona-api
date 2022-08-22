@@ -38,12 +38,14 @@ export class AuthService {
       username,
     }).save();
 
+    user.password = undefined;
+
     const tokenPayload = { _id: user._id };
     const accessToken: string = this.jwtService.sign(tokenPayload);
 
     return {
       accessToken,
-      message: 'Register successful.',
+      user,
     };
   }
 
@@ -51,7 +53,7 @@ export class AuthService {
     const { email, password } = payload;
     const [username] = email.split('@');
 
-    const user = await this.user.findOne({ email });
+    const user = await this.user.findOne({ email }).select('-__v');
 
     if (!user) {
       throw new UnauthorizedException('not-yet-registered');
@@ -70,12 +72,12 @@ export class AuthService {
 
     return {
       accessToken,
-      message: 'Login successful.',
+      user,
     };
   }
 
   async getUser(_id: string): Promise<User> {
-    const user = await this.user.findById(_id, { password: 0 });
+    const user = await this.user.findById(_id, { password: 0 }).select('-__v');
 
     const [username] = user.email.split('@');
 
@@ -84,6 +86,6 @@ export class AuthService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    return await this.user.find({}, { password: 0 });
+    return await this.user.find({}, { password: 0 }).select('-__v');
   }
 }

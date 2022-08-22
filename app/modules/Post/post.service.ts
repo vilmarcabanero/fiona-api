@@ -12,12 +12,12 @@ export class PostService {
   ) {}
 
   async getAllPosts(): Promise<Post[]> {
-    const posts = await this.post.find();
+    const posts = await this.post.find().select('-__v');
     return posts;
   }
 
   async getPost(_id: string): Promise<Post> {
-    const post = await this.post.findById(_id);
+    const post = await this.post.findById(_id).select('-__v');
     return post;
   }
 

@@ -11,12 +11,12 @@ export class CommentService {
   ) {}
 
   async getAllComments(): Promise<Comment[]> {
-    const comments = await this.comment.find();
+    const comments = await this.comment.find().select('-__v');
     return comments;
   }
 
   async getComments(postId: string): Promise<Comment[]> {
-    const comments = await this.comment.find({ postId });
+    const comments = await this.comment.find({ postId }).select('-__v');
     return comments;
   }
 
